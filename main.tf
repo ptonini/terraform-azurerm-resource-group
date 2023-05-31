@@ -1,6 +1,11 @@
 resource "azurerm_resource_group" "this" {
   name     = var.name
   location = var.location
+  lifecycle {
+    ignore_changes = [
+      tags
+    ]
+  }
 }
 
 resource "azurerm_ssh_public_key" "this" {
@@ -8,6 +13,11 @@ resource "azurerm_ssh_public_key" "this" {
   location            = azurerm_resource_group.this.location
   resource_group_name = upper(azurerm_resource_group.this.name)
   public_key          = var.ssh_master_key
+  lifecycle {
+    ignore_changes = [
+      tags
+    ]
+  }
 }
 
 module "vnet" {
