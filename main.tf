@@ -1,6 +1,11 @@
 resource "azurerm_resource_group" "this" {
   name     = var.name
   location = var.location
+  lifecycle {
+    ignore_changes = [
+      tags
+    ]
+  }
 }
 
 resource "azurerm_ssh_public_key" "this" {
