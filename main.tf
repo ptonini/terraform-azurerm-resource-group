@@ -12,7 +12,7 @@ resource "azurerm_ssh_public_key" "this" {
 
 module "vnet" {
   source              = "ptonini/vnet/azurerm"
-  version             = "~> 1.0.0"
+  version             = "~> 1.0.2"
   name                = var.name
   rg                  = azurerm_resource_group.this
   address_space       = var.address_space
@@ -21,7 +21,7 @@ module "vnet" {
 
 module "nat_gateway" {
   source  = "ptonini/nat-gateway/azurerm"
-  version = "~> 1.0.0"
+  version = "~> 1.0.1"
   name    = var.name
   rg      = azurerm_resource_group.this
 }
@@ -50,7 +50,7 @@ module "vpn_gateway" {
 
 module "storage_account" {
   source             = "ptonini/storage-account/azurerm"
-  version            = "~> 1.0.0"
+  version            = "~> 1.0.2"
   name               = coalesce(var.storage_account_name, var.name)
   random_name_suffix = var.storage_account_name == null ? true : false
   rg                 = azurerm_resource_group.this
