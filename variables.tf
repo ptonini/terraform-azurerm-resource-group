@@ -1,20 +1,35 @@
-variable "name" {}
+variable "name" {
+  type    = string
+  default = null
+}
 
-variable "location" {}
+variable "name_prefix" {
+  default = null
+}
 
-variable "address_space" {}
+variable "location" {
+  type = string
+}
+
+variable "master_key" {
+  default = null
+}
+
+variable "vnet_address_space" {
+  default = null
+}
+
+variable "nat_gateway" {
+  default = false
+}
 
 variable "subnets" {
-  type    = number
-  default = 0
+  default = 1
 }
 
 variable "subnet_newbits" {
-  type    = number
-  default = 0
+  default = 8
 }
-
-variable "ssh_master_key" {}
 
 variable "peering_connections" {
   default = {}
@@ -23,27 +38,12 @@ variable "peering_connections" {
   }))
 }
 
-variable "associate_nat_gateway" {
-  type    = bool
-  default = true
-}
-
-variable "network_security_rules" {
-  default = {}
-}
-
-variable "storage_account_name" {
-  default = null
-}
-
-variable "vpn_gateway" {
-  type    = bool
+variable "vnet_gateway" {
   default = false
 }
 
-variable "vpn_gateway_subnet_index" {
-  type    = number
-  default = null
+variable "vnet_gateway_subnet_index" {
+  default = 255
 }
 
 variable "vnet2vnet_conns" {
@@ -52,4 +52,22 @@ variable "vnet2vnet_conns" {
     shared_key = string
   }))
   default = {}
+}
+
+variable "vnet_gateway_vpn_client" {
+  default = null
+}
+
+variable "vnet_gateway_custom_routes" {
+  default = null
+}
+
+variable "storage_accounts" {
+  type    = map(object({}))
+  default = {}
+}
+
+variable "tags" {
+  type        = map(string)
+  description = "Tags do grupo de recursos"
 }
