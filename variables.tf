@@ -63,7 +63,14 @@ variable "vnet_gateway_custom_routes" {
 }
 
 variable "storage_accounts" {
-  type    = map(object({}))
+  type = map(object({
+    account_tier                      = optional(string)
+    account_replication_type          = optional(string)
+    queue_encryption_key_type         = optional(string)
+    table_encryption_key_type         = optional(string)
+    infrastructure_encryption_enabled = optional(bool)
+    randomize_name                    = optional(bool)
+  }))
   default = {}
 }
 
