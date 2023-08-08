@@ -14,6 +14,10 @@ output "subnet_ids" {
   value = [for m in module.subnets : m.this.id]
 }
 
+output "nat_gateway_public_ip" {
+  value = var.nat_gateway ? module.nat_gateway.public_ip : null
+}
+
 output "storage_accounts" {
   value = module.storage_accounts
 }
