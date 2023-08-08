@@ -68,6 +68,6 @@ variable "storage_accounts" {
 }
 
 variable "tags" {
-  type        = map(string)
-  description = "Tags do grupo de recursos"
+  type    = map(string)
+  default = {}
 }

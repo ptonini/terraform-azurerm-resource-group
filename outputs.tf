@@ -14,14 +14,10 @@ output "subnet_ids" {
   value = [for m in module.subnets : m.this.id]
 }
 
-output "subnet_newbits" {
-  value = var.subnet_newbits
-}
-
-output "name_prefix" {
-  value = var.name_prefix
-}
-
 output "storage_accounts" {
   value = module.storage_accounts
+}
+
+output "subnet_newbits" {
+  value = var.subnet_newbits
 }

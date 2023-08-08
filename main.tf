@@ -1,5 +1,10 @@
+locals {
+  name        = coalesce(var.name, "${var.name_prefix}-rg")
+  name_prefix = coalesce(var.name, var.name_prefix)
+}
+
 resource "azurerm_resource_group" "this" {
-  name     = "${var.name_prefix}-rg"
+  name     = coalesce(var.name, "${var.name_prefix}-rg")
   location = var.location
   tags     = var.tags
   lifecycle {
@@ -11,7 +16,7 @@ resource "azurerm_resource_group" "this" {
 
 resource "azurerm_ssh_public_key" "this" {
   count               = var.master_key == null ? 0 : 1
-  name                = "${var.name_prefix}-master-key"
+  name                = coalesce(var.name, "${var.name_prefix}-master-key")
   resource_group_name = upper(azurerm_resource_group.this.name)
   location            = azurerm_resource_group.this.location
   public_key          = var.master_key
@@ -26,7 +31,7 @@ module "vnet" {
   source              = "ptonini/vnet/azurerm"
   version             = "~> 2.0.0"
   count               = var.vnet_address_space == null ? 0 : 1
-  name                = "${var.name_prefix}-vnet"
+  name                = coalesce(var.name, "${var.name_prefix}-vnet")
   rg                  = azurerm_resource_group.this
   address_space       = var.vnet_address_space
   peering_connections = var.peering_connections
@@ -39,7 +44,7 @@ module "nat_gateway" {
   source  = "ptonini/nat-gateway/azurerm"
   version = "~> 1.0.1"
   count   = var.nat_gateway ? 1 : 0
-  name    = "${var.name_prefix}-nat-gateway"
+  name    = coalesce(var.name, "${var.name_prefix}-nat-gateway")
   rg      = azurerm_resource_group.this
 }
 
@@ -58,7 +63,7 @@ module "vnet_gateway" {
   source           = "ptonini/vnet-gateway/azurerm"
   version          = "~> 2.0.1"
   count            = var.vnet_gateway ? 1 : 0
-  name             = "${var.name_prefix}-vnet-gateway"
+  name             = coalesce(var.name, "${var.name_prefix}-vnet-gateway")
   rg               = azurerm_resource_group.this
   vnet             = module.vnet[0].this
   address_prefixes = [cidrsubnet(var.vnet_address_space[0], var.subnet_newbits, var.vnet_gateway_subnet_index)]
