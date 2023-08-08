@@ -4,7 +4,7 @@ variable "name" {
 }
 
 variable "name_prefix" {
-  default = null
+  default = ""
 }
 
 variable "location" {
