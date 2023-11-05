@@ -9,7 +9,10 @@ resource "azurerm_resource_group" "this" {
   tags     = var.tags
   lifecycle {
     ignore_changes = [
-      tags
+      tags.business_unit,
+      tags.environment,
+      tags.product,
+      tags.subscription_type
     ]
   }
 }
@@ -22,7 +25,10 @@ resource "azurerm_ssh_public_key" "this" {
   public_key          = var.master_key
   lifecycle {
     ignore_changes = [
-      tags
+      tags.business_unit,
+      tags.environment,
+      tags.product,
+      tags.subscription_type
     ]
   }
 }
@@ -35,9 +41,6 @@ module "vnet" {
   rg                  = azurerm_resource_group.this
   address_space       = var.vnet_address_space
   peering_connections = var.peering_connections
-  providers = {
-    azurerm = azurerm
-  }
 }
 
 module "nat_gateway" {
