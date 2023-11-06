@@ -64,7 +64,7 @@ module "subnets" {
 
 module "vnet_gateway" {
   source           = "ptonini/vnet-gateway/azurerm"
-  version          = "~> 2.2.0"
+  version          = "~> 2.2.1"
   count            = var.vnet_gateway ? 1 : 0
   name             = coalesce(var.name, "${var.name_prefix}-vnet-gateway")
   rg               = azurerm_resource_group.this
