@@ -64,7 +64,7 @@ module "subnets" {
 
 module "vnet_gateway" {
   source           = "ptonini/vnet-gateway/azurerm"
-  version          = "~> 2.0.1"
+  version          = "~> 2.1.0"
   count            = var.vnet_gateway ? 1 : 0
   name             = coalesce(var.name, "${var.name_prefix}-vnet-gateway")
   rg               = azurerm_resource_group.this
@@ -73,6 +73,7 @@ module "vnet_gateway" {
   custom_routes    = var.vnet_gateway_custom_routes
   vpn_client       = var.vnet_gateway_vpn_client
   vnet2vnet_conns  = var.vnet2vnet_conns
+  site2site_conns  = var.site2site_conns
 }
 
 module "storage_accounts" {

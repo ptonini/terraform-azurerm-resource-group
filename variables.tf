@@ -46,6 +46,15 @@ variable "vnet_gateway_subnet_index" {
   default = 255
 }
 
+variable "site2site_conns" {
+  type = map(object({
+    gateway_address = string
+    address_space   = set(string)
+    shared_key      = string
+  }))
+  default = {}
+}
+
 variable "vnet2vnet_conns" {
   type = map(object({
     gateway_id = string
