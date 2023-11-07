@@ -15,7 +15,11 @@ output "subnet_ids" {
 }
 
 output "nat_gateway_public_ip" {
-  value = var.nat_gateway ? module.nat_gateway[0].public_ip : null
+  value = var.nat_gateway ? module.nat_gateway[0].public_ip.ip_address : null
+}
+
+output "vnet_gateway_public_ip" {
+  value = var.vnet_gateway ? module.vnet_gateway[0].public_ip.ip_address : null
 }
 
 output "storage_accounts" {
