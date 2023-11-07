@@ -42,6 +42,18 @@ variable "vnet_gateway" {
   default = false
 }
 
+variable "vnet_gateway_type" {
+  default = null
+}
+
+variable "vnet_gateway_sku" {
+  default = null
+}
+
+variable "vnet_gateway_vpn_type" {
+  default = null
+}
+
 variable "vnet_gateway_subnet_index" {
   default = 255
 }

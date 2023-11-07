@@ -64,12 +64,15 @@ module "subnets" {
 
 module "vnet_gateway" {
   source           = "ptonini/vnet-gateway/azurerm"
-  version          = "~> 2.2.2"
+  version          = "~> 2.3.1"
   count            = var.vnet_gateway ? 1 : 0
   name             = coalesce(var.name, "${var.name_prefix}-vnet-gateway")
   rg               = azurerm_resource_group.this
   vnet             = module.vnet[0].this
   address_prefixes = [cidrsubnet(var.vnet_address_space[0], var.subnet_newbits, var.vnet_gateway_subnet_index)]
+  type             = var.vnet_gateway_type
+  sku              = var.vnet_gateway_sku
+  vpn_type         = var.vnet_gateway_vpn_type
   custom_routes    = var.vnet_gateway_custom_routes
   vpn_client       = var.vnet_gateway_vpn_client
   vnet2vnet_conns  = var.vnet2vnet_conns
