@@ -19,7 +19,7 @@ output "nat_gateway_public_ip" {
 }
 
 output "vnet_gateway_public_ip" {
-  value = var.vnet_gateway ? module.vnet_gateway[0].public_ip.ip_address : null
+  value = var.vnet_gateway == null ? null : module.vnet_gateway[0].public_ip.ip_address
 }
 
 output "storage_accounts" {

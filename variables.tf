@@ -39,56 +39,41 @@ variable "peering_connections" {
 }
 
 variable "vnet_gateway" {
-  default = false
-}
-
-variable "vnet_gateway_type" {
-  default = null
-}
-
-variable "vnet_gateway_sku" {
-  default = null
-}
-
-variable "vnet_gateway_vpn_type" {
-  default = null
-}
-
-variable "vnet_gateway_subnet_index" {
-  default = 255
-}
-
-variable "site2site_conns" {
-  type = map(object({
-    gateway_address = string
-    address_space   = set(string)
-    shared_key      = string
-    ipsec_policy = optional(object({
-      dh_group         = string
-      ike_encryption   = string
-      ike_integrity    = string
-      ipsec_encryption = string
-      ipsec_integrity  = string
-      pfs_group        = string
-      sa_lifetime      = optional(string)
+  type = object({
+    type          = optional(string, "Vpn")
+    sku           = optional(string, "VpnGw1")
+    vpn_type      = optional(string)
+    subnet_index  = optional(number, 255)
+    custom_routes = optional(set(string))
+    vpn_client = optional(object({
+      address_space        = set(string)
+      protocols            = set(string)
+      auth_types           = set(string)
+      aad_tenant           = optional(string)
+      aad_issuer           = optional(string)
+      aad_audience         = optional(string)
+      root_certificates    = optional(map(string), {})
+      revoked_certificates = optional(map(string), {})
     }))
-  }))
-  default = {}
-}
-
-variable "vnet2vnet_conns" {
-  type = map(object({
-    gateway_id = string
-    shared_key = string
-  }))
-  default = {}
-}
-
-variable "vnet_gateway_vpn_client" {
-  default = null
-}
-
-variable "vnet_gateway_custom_routes" {
+    vnet2vnet_conns = optional(map(object({
+      gateway_id = string
+      shared_key = string
+    })), {})
+    site2site_conns = optional(map(object({
+      gateway_address = string
+      address_space   = set(string)
+      shared_key      = string
+      ipsec_policy = optional(object({
+        dh_group         = string
+        ike_encryption   = string
+        ike_integrity    = string
+        ipsec_encryption = string
+        ipsec_integrity  = string
+        pfs_group        = string
+        sa_lifetime      = optional(string)
+      }))
+    })), {})
+  })
   default = null
 }
 
