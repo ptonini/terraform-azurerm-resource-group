@@ -22,6 +22,10 @@ output "vnet_gateway_public_ip" {
   value = var.vnet_gateway == null ? null : module.vnet_gateway[0].public_ip.ip_address
 }
 
+output "vnet_gateway_subnet_id" {
+  value = var.vnet_gateway == null ? null : module.vnet_gateway[0].subnet_id
+}
+
 output "storage_accounts" {
   value = module.storage_accounts
 }

@@ -63,20 +63,22 @@ module "subnets" {
 }
 
 module "vnet_gateway" {
-  source           = "ptonini/vnet-gateway/azurerm"
-  version          = "~> 2.3.2"
-  count            = var.vnet_gateway == null ? 0 : 1
-  name             = coalesce(var.name, "${var.name_prefix}-vnet-gateway")
-  rg               = azurerm_resource_group.this
-  vnet             = module.vnet[0].this
-  address_prefixes = [cidrsubnet(var.vnet_address_space[0], var.subnet_newbits, var.vnet_gateway.subnet_index)]
-  type             = var.vnet_gateway.type
-  sku              = var.vnet_gateway.sku
-  vpn_type         = var.vnet_gateway.vpn_type
-  custom_routes    = var.vnet_gateway.custom_routes
-  vpn_client       = var.vnet_gateway.vpn_client
-  vnet2vnet_conns  = var.vnet_gateway.vnet2vnet_conns
-  site2site_conns  = var.vnet_gateway.site2site_conns
+  source  = "ptonini/vnet-gateway/azurerm"
+  version = "~> 3.0.1"
+  count   = var.vnet_gateway == null ? 0 : 1
+  name    = coalesce(var.name, "${var.name_prefix}-vnet-gateway")
+  rg      = azurerm_resource_group.this
+  subnet = {
+    vnet             = module.vnet[0].this
+    address_prefixes = [cidrsubnet(var.vnet_address_space[0], var.subnet_newbits, var.vnet_gateway.subnet_index)]
+  }
+  type            = var.vnet_gateway.type
+  sku             = var.vnet_gateway.sku
+  vpn_type        = var.vnet_gateway.vpn_type
+  custom_routes   = var.vnet_gateway.custom_routes
+  vpn_client      = var.vnet_gateway.vpn_client
+  vnet2vnet_conns = var.vnet_gateway.vnet2vnet_conns
+  site2site_conns = var.vnet_gateway.site2site_conns
 }
 
 module "storage_accounts" {
