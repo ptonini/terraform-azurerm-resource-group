@@ -45,7 +45,7 @@ variable "vnet_gateway" {
     vpn_type      = optional(string)
     subnet_index  = optional(number, 255)
     custom_routes = optional(set(string))
-    vpn_client = optional(object({
+    vpn_client_configuration = optional(object({
       address_space        = set(string)
       protocols            = set(string)
       auth_types           = set(string)
@@ -55,11 +55,8 @@ variable "vnet_gateway" {
       root_certificates    = optional(map(string), {})
       revoked_certificates = optional(map(string), {})
     }))
-    vnet2vnet_conns = optional(map(object({
-      gateway_id = string
-      shared_key = string
-    })), {})
-    site2site_conns = optional(map(object({
+    connections = optional(map(object({
+      gateway_id      = string
       gateway_address = string
       address_space   = set(string)
       shared_key      = string

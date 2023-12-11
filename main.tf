@@ -9,10 +9,10 @@ resource "azurerm_resource_group" "this" {
   tags     = var.tags
   lifecycle {
     ignore_changes = [
-      tags.business_unit,
-      tags.environment,
-      tags.product,
-      tags.subscription_type
+      tags["business_unit"],
+      tags["environment"],
+      tags["product"],
+      tags["subscription_type"]
     ]
   }
 }
@@ -25,10 +25,10 @@ resource "azurerm_ssh_public_key" "this" {
   public_key          = var.master_key
   lifecycle {
     ignore_changes = [
-      tags.business_unit,
-      tags.environment,
-      tags.product,
-      tags.subscription_type
+      tags["business_unit"],
+      tags["environment"],
+      tags["product"],
+      tags["subscription_type"]
     ]
   }
 }
@@ -53,18 +53,18 @@ module "nat_gateway" {
 
 module "subnets" {
   source           = "ptonini/subnet/azurerm"
-  version          = "~> 1.0.0"
+  version          = "~> 1.0.3"
   count            = var.vnet_address_space == null ? 0 : var.subnets
   name             = "subnet${format("%04.0f", count.index + 1)}"
   rg               = azurerm_resource_group.this
   vnet             = module.vnet[0].this
   address_prefixes = [cidrsubnet(var.vnet_address_space[0], var.subnet_newbits, count.index)]
-  nat_gateway      = var.nat_gateway ? module.nat_gateway[0].this : null
+  nat_gateway_id   = one(module.nat_gateway[*].this.id)
 }
 
 module "vnet_gateway" {
   source  = "ptonini/vnet-gateway/azurerm"
-  version = "~> 3.0.1"
+  version = "~> 3.1.0"
   count   = var.vnet_gateway == null ? 0 : 1
   name    = coalesce(var.name, "${var.name_prefix}-vnet-gateway")
   rg      = azurerm_resource_group.this
@@ -72,13 +72,12 @@ module "vnet_gateway" {
     vnet             = module.vnet[0].this
     address_prefixes = [cidrsubnet(var.vnet_address_space[0], var.subnet_newbits, var.vnet_gateway.subnet_index)]
   }
-  type            = var.vnet_gateway.type
-  sku             = var.vnet_gateway.sku
-  vpn_type        = var.vnet_gateway.vpn_type
-  custom_routes   = var.vnet_gateway.custom_routes
-  vpn_client      = var.vnet_gateway.vpn_client
-  vnet2vnet_conns = var.vnet_gateway.vnet2vnet_conns
-  site2site_conns = var.vnet_gateway.site2site_conns
+  type                     = var.vnet_gateway.type
+  sku                      = var.vnet_gateway.sku
+  vpn_type                 = var.vnet_gateway.vpn_type
+  custom_routes            = var.vnet_gateway.custom_routes
+  vpn_client_configuration = var.vnet_gateway.vpn_client_configuration
+  connections              = var.vnet_gateway.connections
 }
 
 module "storage_accounts" {
