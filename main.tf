@@ -53,7 +53,7 @@ module "nat_gateway" {
 
 module "subnets" {
   source           = "ptonini/subnet/azurerm"
-  version          = "~> 1.0.3"
+  version          = "~> 1.1.0"
   count            = var.vnet_address_space == null ? 0 : var.subnets
   name             = "subnet${format("%04.0f", count.index + 1)}"
   rg               = azurerm_resource_group.this
