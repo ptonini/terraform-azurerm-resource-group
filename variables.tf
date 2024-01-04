@@ -56,9 +56,10 @@ variable "vnet_gateway" {
       revoked_certificates = optional(map(string), {})
     }))
     connections = optional(map(object({
-      gateway_id      = string
-      gateway_address = string
-      address_space   = set(string)
+      type            = optional(string)
+      gateway_id      = optional(string)
+      gateway_address = optional(string)
+      address_space   = optional(set(string))
       shared_key      = string
       ipsec_policy = optional(object({
         dh_group         = string
