@@ -59,7 +59,7 @@ module "subnets" {
   rg               = azurerm_resource_group.this
   vnet             = module.vnet[0].this
   address_prefixes = [cidrsubnet(var.vnet_address_space[0], var.subnet_newbits, count.index)]
-  nat_gateway      = var.nat_gateway ? module.nat_gateway[0].this : null
+  nat_gateway      = var.nat_gateway ? module.nat_gateway[0].this.id : null
 }
 
 module "vnet_gateway" {
